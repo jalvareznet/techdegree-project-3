@@ -9,7 +9,6 @@ const fieldset = document.querySelector('fieldset');
 const inputOtherTitle = document.querySelector('#other-title');
 inputOtherTitle.style.display = 'none';
 
-
 fieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
   const otherValue = document.querySelector('option[value="other"]');
@@ -188,7 +187,6 @@ const total =
 +buildTools.getAttribute('price') +
 +npm.getAttribute('price');
 
-
 totalPriceDiv.innerHTML = "<h3> Total: $" + total + "<h3>";
 fieldsetActivities.appendChild(totalPriceDiv);
 
@@ -196,7 +194,6 @@ if ( total === 0 ) {
   fieldsetActivities.removeChild(totalPriceDiv);
 }
 });
-
 
 //4.- Payment Info section of the form:
 
@@ -216,9 +213,6 @@ const bitcoin = document.querySelector('[value="bitcoin"]');
 const paypal = document.querySelector('[value="paypal"]');
 const selectMethod = document.querySelector('[value="select_method"]');
 const selectPayment = document.querySelector('#payment');
-
-
-
 
 lastFieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
@@ -246,9 +240,6 @@ lastFieldset.addEventListener('change', (e) => {
 
   }
 });
-
-
-
 // credit card required field
 const inputNumberCreditCard = document.querySelector('#cc-num');
 inputNumberCreditCard.setAttribute("pattern", "[0-9]{13,16}")
@@ -266,9 +257,6 @@ const cvv = document.querySelector('#cvv');
 cvv.setAttribute("pattern", "[0-9]{3}");
 cvv.setAttribute("minlength", "3");
 cvv.setAttribute("maxlength", "3");
-
-
-
 // error message for name
 
 creditCard.selected = true;
@@ -278,8 +266,6 @@ form.addEventListener('submit', (e) => {
 e.preventDefault();
 
 
-  inputName.required = true;
-  inputMail.required = true;
 
 
    const labelName = inputName.previousSibling.previousSibling;
@@ -289,41 +275,43 @@ e.preventDefault();
 
 //function valid name
 function validName() {
+  inputName.required = true;
 
   if (!inputName.validity.valid) {
     errorNameMessage.innerHTML = '<strong>  Please type a correct name</strong>';
     errorNameMessage.style.color = '#b70000';
     labelName.appendChild(errorNameMessage);
-    if(inputName.validity.valid){
-      errorNameMessage.style.display = '';
     }
   }
-}
-
 validName();
 
 //function valid Email
 function validEmail() {
+  inputMail.required = true;
   if (!inputMail.validity.valid) {
     const labelMail = inputMail.previousSibling.previousSibling;
-
     errorMailMessage.innerHTML = '<strong> Your email should look like "name@company.com"</strong>';
     errorMailMessage.style.color = '#b70000';
     labelMail.appendChild(errorMailMessage);
   }
 }
-
  validEmail();
 
 // function valid checkbox
 function valCheckBoxForm (){
 const checkboxVal = all.checked || frameworks.checked || libs.checked || express.checked ||
 node.checked || buildTools.checked || npm.checked;
-  if( !checkboxVal == true ){
-  const activitiesError = all.parentNode.parentNode;
+const activitiesError = all.parentNode.parentNode;
+  if( !checkboxVal === true ){
   errorActivitiesMessage.innerHTML = '<strong> Please, select at least one activity</strong>';
   errorActivitiesMessage.style.color = '#b70000';
   activitiesError.appendChild(errorActivitiesMessage);
+
+  function removeSecondErrorCheckbox(){
+    activitiesError.removeChild(errorActivitiesMessage.previousSibling);
+  }
+removeSecondErrorCheckbox();
+
   }
 }
 valCheckBoxForm();
@@ -344,10 +332,7 @@ function valPaymentMethod(){
     zipCode.required = false;
     cvv.required = false;
     creditCard.selected === false;
-
   }
-
-
 }
 
 valPaymentMethod();
