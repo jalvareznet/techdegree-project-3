@@ -66,6 +66,7 @@ legend {
 
 input[type="text"],
 input[type="email"],
+input[type="number"],
 legend {
 	width: 100%;
 }
@@ -155,16 +156,9 @@ button:hover {
 ==================================== */
 
 input:invalid {
-  border: 2px solid #184c62;
+  background-color: #f4f097;
+  }
 }
-
-input:valid {
-  border: 1px solid grey;
-}
-
-
-
-
 
 
 /* =================================

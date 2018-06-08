@@ -1,32 +1,32 @@
-//1.- When the page loads, give focus to the first text field
+//When the page loads, give focus to the first text field
 const inputName = document.getElementById('name');
 inputName.focus();
 const inputMail = document.getElementById('mail');
-//2.- If job role is in other --> text field is revealed.
+
 const fieldset = document.querySelector('fieldset');
+
+//hide the input Other in the job Role when the page charge.
+const inputOtherTitle = document.querySelector('#other-title');
+inputOtherTitle.style.display = 'none';
+
 
 fieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
   const otherValue = document.querySelector('option[value="other"]');
   const other = otherValue.value;
 
-//if inputField already exists remove it. This is for remove when the option change.
   if( inputField = document.querySelector('#other-title')){
   fieldset.removeChild(inputField);
-}
+  }
+
 //if selected is equal to other then create and append the new field.
   if (selected === other ) {
       //2.1.- create input element with text type.
       const inputField = document.createElement('input');
       inputField.type = 'text';
       //2.2.- create atribute id and placeholder, assign the value and set it to the input.
-      const idAttr = document.createAttribute('id');
-      const placeholderAttr = document.createAttribute('placeholder');
-      idAttr.value = 'other-title';
-      placeholderAttr.value = 'Your Job Role';
-      inputField.setAttributeNode(idAttr);
-      inputField.setAttributeNode(placeholderAttr);
-      //2.3.- append input to the fieldset.
+      inputField.setAttribute("id", "other-title");
+      inputField.setAttribute("placeholder", "Your Job Role");
       fieldset.appendChild(inputField);
     }
 });
@@ -212,9 +212,7 @@ divBitcoin.style.display = 'none';
 const lastFieldset = divCreditCard.parentNode;
 
 const creditCard = document.querySelector('[value="credit card"]');
-const selectedAttr = document.createAttribute('selected');
-creditCard.setAttributeNode(selectedAttr);
-
+creditCard.selected = true;
 
 lastFieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
@@ -242,20 +240,61 @@ lastFieldset.addEventListener('change', (e) => {
 });
 
 
-const requiredAttrName = document.createAttribute('required');
-const requiredAttrMail = document.createAttribute('required');
-const requiredNumberCreditCard = document.createAttribute('required minlength="6" ');
-inputName.setAttributeNode(requiredAttrName);
-inputMail.setAttributeNode(requiredAttrMail);
 
+// credit card required field
+const inputNumberCreditCard = document.querySelector('#cc-num');
+inputNumberCreditCard.setAttribute("pattern", "[0-9]{13,16}")
+inputNumberCreditCard.setAttribute("minlength", "13");
+inputNumberCreditCard.setAttribute("maxlength", "16");
+
+//zip code required field
+const zipCode = document.querySelector('#zip');
+zipCode.setAttribute("pattern", "[0-9]{5}");
+zipCode.setAttribute("minlength", "5");
+zipCode.setAttribute("maxlength", "5");
+
+//CVV required field
+const cvv = document.querySelector('#cvv');
+cvv.setAttribute("pattern", "[0-9]{3}");
+cvv.setAttribute("minlength", "3");
+cvv.setAttribute("maxlength", "3");
+
+
+
+// error message for name
 
 
 const form = document.querySelector('form');
 form.addEventListener('submit', (e) => {
-  e.preventDefault();
 
+e.preventDefault();
 
+  inputName.required = true;
+  inputMail.required = true;
+  inputNumberCreditCard.required = true;
+  zipCode.required = true;
+  cvv.required = true;
 
+   const labelName = inputName.previousSibling.previousSibling;
+   const errorNameMessage = document.createElement('span');
+   errorNameMessage.innerHTML = '<strong>  Please type a correct name</strong>';
+
+const errorMailMessage = document.createElement('span');
+ if (!inputName.validity.valid) {
+   labelName.appendChild(errorNameMessage);
+ } else {
+   labelName.style.display = 'none';
+ }
+
+ if (!inputMail.validity.valid) {
+   const labelMail = inputMail.previousSibling.previousSibling;
+
+   errorMailMessage.innerHTML = '<strong> Your email should look like "name@company.com"</strong>';
+   labelMail.appendChild(errorMailMessage);
+
+ } else if ( inputMail.validity.valid ){
+   errorMailMessage.style.display = 'none';
+ }
 
 });
 
