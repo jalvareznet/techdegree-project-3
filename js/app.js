@@ -212,30 +212,38 @@ divBitcoin.style.display = 'none';
 const lastFieldset = divCreditCard.parentNode;
 
 const creditCard = document.querySelector('[value="credit card"]');
-creditCard.selected = true;
+const bitcoin = document.querySelector('[value="bitcoin"]');
+const paypal = document.querySelector('[value="paypal"]');
+const selectMethod = document.querySelector('[value="select_method"]');
+const selectPayment = document.querySelector('#payment');
+
+
+
 
 lastFieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
+
+  if(selected === 'credit card' || selected === 'paypal' || selected === 'bitcoin' || selected === 'select_method'){
+      selectMethod.style.display = 'none';
+  }
 
   if ( selected === 'credit card' ) {
     divCreditCard.style.display = 'block';
     divPaypal.style.display = 'none';
     divBitcoin.style.display = 'none';
+
   }
   if ( selected === 'paypal') {
     divPaypal.style.display = 'block';
     divBitcoin.style.display = 'none';
     divCreditCard.style.display = 'none';
+
   }
   if ( selected === 'bitcoin') {
     divBitcoin.style.display = 'block';
     divPaypal.style.display = 'none';
     divCreditCard.style.display = 'none';
-  }
-  if ( selected === 'select_method') {
-    divBitcoin.style.display = 'none';
-    divPaypal.style.display = 'none';
-    divCreditCard.style.display = 'none';
+
   }
 });
 
@@ -263,54 +271,85 @@ cvv.setAttribute("maxlength", "3");
 
 // error message for name
 
+creditCard.selected = true;
 
 const form = document.querySelector('form');
 form.addEventListener('submit', (e) => {
-
 e.preventDefault();
+
 
   inputName.required = true;
   inputMail.required = true;
-  inputNumberCreditCard.required = true;
-  zipCode.required = true;
-  cvv.required = true;
+
 
    const labelName = inputName.previousSibling.previousSibling;
    const errorNameMessage = document.createElement('span');
-   errorNameMessage.innerHTML = '<strong>  Please type a correct name</strong>';
+   const errorActivitiesMessage = document.createElement('span');
+   const errorMailMessage = document.createElement('span');
 
-const errorMailMessage = document.createElement('span');
- if (!inputName.validity.valid) {
-   labelName.appendChild(errorNameMessage);
- } else {
-   labelName.style.display = 'none';
- }
+//function valid name
+function validName() {
 
- if (!inputMail.validity.valid) {
-   const labelMail = inputMail.previousSibling.previousSibling;
+  if (!inputName.validity.valid) {
+    errorNameMessage.innerHTML = '<strong>  Please type a correct name</strong>';
+    errorNameMessage.style.color = '#b70000';
+    labelName.appendChild(errorNameMessage);
+    if(inputName.validity.valid){
+      errorNameMessage.style.display = '';
+    }
+  }
+}
 
-   errorMailMessage.innerHTML = '<strong> Your email should look like "name@company.com"</strong>';
-   labelMail.appendChild(errorMailMessage);
+validName();
 
- } else if ( inputMail.validity.valid ){
-   errorMailMessage.style.display = 'none';
- }
+//function valid Email
+function validEmail() {
+  if (!inputMail.validity.valid) {
+    const labelMail = inputMail.previousSibling.previousSibling;
+
+    errorMailMessage.innerHTML = '<strong> Your email should look like "name@company.com"</strong>';
+    errorMailMessage.style.color = '#b70000';
+    labelMail.appendChild(errorMailMessage);
+  }
+}
+
+ validEmail();
+
+// function valid checkbox
+function valCheckBoxForm (){
+const checkboxVal = all.checked || frameworks.checked || libs.checked || express.checked ||
+node.checked || buildTools.checked || npm.checked;
+  if( !checkboxVal == true ){
+  const activitiesError = all.parentNode.parentNode;
+  errorActivitiesMessage.innerHTML = '<strong> Please, select at least one activity</strong>';
+  errorActivitiesMessage.style.color = '#b70000';
+  activitiesError.appendChild(errorActivitiesMessage);
+  }
+}
+valCheckBoxForm();
+
+
+function valPaymentMethod(){
+
+  if( creditCard.selected === true ){
+    inputNumberCreditCard.required = true;
+    zipCode.required = true;
+    cvv.required = true;
+    paypal.selected === false;
+    bitcoin.selected === false;
+  }
+
+  if( paypal.selected === true || bitcoin.selected === true ){
+    inputNumberCreditCard.required = false;
+    zipCode.required = false;
+    cvv.required = false;
+    creditCard.selected === false;
+
+  }
+
+
+}
+
+valPaymentMethod();
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
