@@ -273,7 +273,7 @@ inputNumberCreditCard.addEventListener('input', (e) => {
   } else if(inputNumberCreditCard.validity.valid){
     const errorCreditLive = document.querySelector('.errorCreditCardLive');
     errorCreditLive.innerHTML = " <strong>WELL DONE WITH THE CREDIT CARD! </strong>";
-    errorCreditLive.style.color = '#b70000';
+    errorCreditLive.style.color = '#2733ce';
   }
 });
 //WHEN THE REGISTER BUTTON IS CLICKED ------------------------------------------
