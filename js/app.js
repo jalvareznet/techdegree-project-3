@@ -1,38 +1,34 @@
-//When the page loads, give focus to the first text field
+//variables
 const inputName = document.getElementById('name');
-inputName.focus();
 const inputMail = document.getElementById('mail');
-
 const fieldset = document.querySelector('fieldset');
-
-//hide the input Other in the job Role when the page charge.
 const inputOtherTitle = document.querySelector('#other-title');
-inputOtherTitle.style.display = 'none';
 
+//JOB ROLE ---------------------------------------------------------------------
+
+//When the page loads, give focus to the first text field
+inputName.focus();
+//hide the input Other in the job Role when the page charge.
+inputOtherTitle.style.display = 'none';
+//event listener for the Job Role.
 fieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
   const otherValue = document.querySelector('option[value="other"]');
   const other = otherValue.value;
-
-  if( inputField = document.querySelector('#other-title')){
-  fieldset.removeChild(inputField);
-  }
-
-//if selected is equal to other then create and append the new field.
-  if (selected === other ) {
-      //2.1.- create input element with text type.
-      const inputField = document.createElement('input');
-      inputField.type = 'text';
-      //2.2.- create atribute id and placeholder, assign the value and set it to the input.
-      inputField.setAttribute("id", "other-title");
-      inputField.setAttribute("placeholder", "Your Job Role");
-      fieldset.appendChild(inputField);
-    }
+// if Other is selected then display the input else not.
+if( selected === other ){
+  inputOtherTitle.style.display = 'block';
+} else {
+  inputOtherTitle.style.display = 'none';
+}
 });
 
-//3.1 only display the color options that match the design selected.
+//T-SHIRT INFO -----------------------------------------------------------------
 
+//only display the color options that match the design selected.
+  //colors selectors
   const shirtFieldset = document.querySelector('.shirt');
+
   const tomato = document.querySelector('option[value="tomato"]');
   const steelblue = document.querySelector('option[value="steelblue"]');
   const dimgrey = document.querySelector('option[value="dimgrey"]');
@@ -41,23 +37,28 @@ fieldset.addEventListener('change', (e) => {
   const gold = document.querySelector('option[value="gold"]');
 
   const divColors = document.querySelector('#colors-js-puns');
+  //hide the colors selector
   divColors.style.display = 'none';
 
+// event listener when design selection change
 shirtFieldset.addEventListener('change', (e) => {
 
   const selected = e.target.value;
 
   const jsPunsValue = document.querySelector('option[value="js puns"]');
   const jsPuns = jsPunsValue.value;
-
   const heartJsValue = document.querySelector('option[value="heart js"]');
   const heartJs = heartJsValue.value;
 
   const selectedAttr = document.createAttribute('selected');
 
+// if selected is jsPuns then hide/ show depending of the list.
   if ( selected === jsPuns ) {
+    // display the colors selector
     divColors.style.display = 'block';
+      // deleting the previus selected category
     tomato.removeAttribute('selected');
+      // selecting the first item to show when category selected.
     cornflowerblue.setAttributeNode(selectedAttr);
     tomato.style.display = 'none';
     steelblue.style.display = 'none';
@@ -77,12 +78,14 @@ shirtFieldset.addEventListener('change', (e) => {
     darkslategrey.style.display = 'none';
     gold.style.display = 'none';
     }
+  //  if the select theme button click then hide the color list.
   if ( selected === 'Select Theme') {
     divColors.style.display = 'none';
   }
 });
 
-//3.1 ”Register for Activities” section of the form:
+// REGISTER FOR ACTIVITIES -----------------------------------------------------
+//Selecting each input in a const.
 const fieldsetActivities = document.querySelector('.activities');
 
 const all = document.querySelector('input[name="all"]');
@@ -93,8 +96,9 @@ const node = document.querySelector('input[name="node"]');
 const buildTools = document.querySelector('input[name="build-tools"]');
 const npm = document.querySelector('input[name="npm"]');
 
+//creating the attribute disabled.
 const disabledAttr = document.createAttribute('disabled');
-
+// creating the attribute price.
 const allPrice = document.createAttribute('price')
 const frameworksPrice = document.createAttribute('price')
 const libsPrice = document.createAttribute('price')
@@ -102,20 +106,25 @@ const expressPrice = document.createAttribute('price')
 const nodePrice = document.createAttribute('price')
 const buildToolsPrice = document.createAttribute('price')
 const npmPrice = document.createAttribute('price')
-
+//creating the element div.
 const totalPriceDiv = document.createElement('div');
+
+//add event listener when cheking the checkboxes
 
 fieldsetActivities.addEventListener('change', () => {
 
+//assigning the value of the attribute if checking.
 if (all.checked) {
   allPrice.value = 200;
 } else {
   allPrice.value = 0;
 }
 if ( frameworks.checked ) {
+  //disabling the checkbox which are at the same time/day.
   express.disabled = true;
   frameworksPrice.value = 100;
   if (true) {
+    //styling the disabling labels of the same time/day.
     express.parentNode.style.color = 'grey';
   }
 } else {
@@ -169,7 +178,7 @@ if (npm.checked) {
   npmPrice.value = 0;
 }
 
-//3.3 total amount $ in courses
+//setting the attribute for each item
 all.setAttributeNode(allPrice);
 frameworks.setAttributeNode(frameworksPrice);
 libs.setAttributeNode(libsPrice);
@@ -177,7 +186,7 @@ express.setAttributeNode(expressPrice);
 node.setAttributeNode(nodePrice);
 buildTools.setAttributeNode(buildToolsPrice);
 npm.setAttributeNode(npmPrice);
-
+//total amount $ in courses. Sum of each price attribute value.
 const total =
 +all.getAttribute('price') +
 +frameworks.getAttribute('price') +
@@ -186,41 +195,41 @@ const total =
 +node.getAttribute('price') +
 +buildTools.getAttribute('price') +
 +npm.getAttribute('price');
-
+//creating the html and appending it.
 totalPriceDiv.innerHTML = "<h3> Total: $" + total + "<h3>";
 fieldsetActivities.appendChild(totalPriceDiv);
-
+// if value is 0, don't append total Price.
 if ( total === 0 ) {
   fieldsetActivities.removeChild(totalPriceDiv);
 }
 });
-
-//4.- Payment Info section of the form:
-
+//PAYMENT INFO -----------------------------------------------------------------
+//Payment Info section of the form:
+// credit card block
 const divCreditCard = document.querySelector('#credit-card');
 divCreditCard.style.display = 'block';
-
+// hiding the paypal option
 const divPaypal = divCreditCard.nextElementSibling;
 divPaypal.style.display = 'none';
-
+// hiding the bitcoin option
 const divBitcoin = divPaypal.nextElementSibling;
 divBitcoin.style.display = 'none';
-
+// selecting the parent.
 const lastFieldset = divCreditCard.parentNode;
-
+// selectors
 const creditCard = document.querySelector('[value="credit card"]');
 const bitcoin = document.querySelector('[value="bitcoin"]');
 const paypal = document.querySelector('[value="paypal"]');
 const selectMethod = document.querySelector('[value="select_method"]');
 const selectPayment = document.querySelector('#payment');
-
+// event listener when change the options.
 lastFieldset.addEventListener('change', (e) => {
   const selected = e.target.value;
-
+// if selected any the select payment method dissapear.
   if(selected === 'credit card' || selected === 'paypal' || selected === 'bitcoin' || selected === 'select_method'){
       selectMethod.style.display = 'none';
   }
-
+//if select credit card the others are hidden.
   if ( selected === 'credit card' ) {
     divCreditCard.style.display = 'block';
     divPaypal.style.display = 'none';
@@ -242,6 +251,7 @@ lastFieldset.addEventListener('change', (e) => {
 });
 // credit card required field
 const inputNumberCreditCard = document.querySelector('#cc-num');
+// creating the attributes with pattern and min-max length.
 inputNumberCreditCard.setAttribute("pattern", "[0-9]{13,16}")
 inputNumberCreditCard.setAttribute("minlength", "13");
 inputNumberCreditCard.setAttribute("maxlength", "16");
@@ -257,32 +267,38 @@ const cvv = document.querySelector('#cvv');
 cvv.setAttribute("pattern", "[0-9]{3}");
 cvv.setAttribute("minlength", "3");
 cvv.setAttribute("maxlength", "3");
-// error message for name
-
+// credit card payment option is selected by default.
 creditCard.selected = true;
 
+//WHEN THE REGISTER BUTTON IS CLICKED ------------------------------------------
 const form = document.querySelector('form');
+// event listener for the submit button.
 form.addEventListener('submit', (e) => {
-
-
+// creating const with the error messages.
    const labelName = inputName.previousSibling.previousSibling;
    const errorNameMessage = document.createElement('span');
    const errorActivitiesMessage = document.createElement('span');
    const errorMailMessage = document.createElement('span');
    const errorCreditCardMessage = document.createElement('p');
-
-//function valid name
+//function to validate name
 function validName() {
+  // name is a required field.
   inputName.required = true;
+  //if name is not true:
   if (!inputName.validity.valid) {
+    // create a example
     inputName.setAttribute("placeholder", "Victor Hugo");
+    // write the sentence error
     errorNameMessage.innerHTML = '<strong>  Please type a correct name</strong>';
     errorNameMessage.style.color = '#b70000';
+    // append the sentence
     labelName.appendChild(errorNameMessage);
+    // this function is to remove the child if register if clicked more than one time.
     function removeSecondErrorName(){
       labelName.removeChild(errorNameMessage.previousSibling);
     }
   removeSecondErrorName();
+  //prevent default behavior of the browser if condition.
   e.preventDefault();
     }
   }
@@ -311,6 +327,7 @@ function valCheckBoxForm (){
 const checkboxVal = all.checked || frameworks.checked || libs.checked || express.checked ||
 node.checked || buildTools.checked || npm.checked;
 const activitiesError = all.parentNode.parentNode;
+//if no checked true so...
   if( !checkboxVal === true ){
   errorActivitiesMessage.innerHTML = '<strong> Please, select at least one activity</strong>';
   errorActivitiesMessage.style.color = '#b70000';
@@ -324,15 +341,15 @@ e.preventDefault();
 }
 valCheckBoxForm();
 
-
+// function valid payment methods.
 function valPaymentMethod(){
-
-
-
+  //if credit card selected...
   if( creditCard.selected === true ){
+    //this three inputs turn required
     inputNumberCreditCard.required = true;
     zipCode.required = true;
     cvv.required = true;
+    // if at the same time are not well validated, then show error message.
     if( !inputNumberCreditCard.validity.valid || !zipCode.validity.valid || !cvv.validity.valid ) {
       inputNumberCreditCard.setAttribute("placeholder", "13 to 16 numbers");
       zipCode.setAttribute("placeholder", "xxxxx");
@@ -345,18 +362,14 @@ function valPaymentMethod(){
       }
     removeSecondErrorCreditcard();
       e.preventDefault();
-
     }
-
   }
-
+// if paypal or bitcoin are selected credit card inputs are not required.
   if( paypal.selected === true || bitcoin.selected === true ){
     inputNumberCreditCard.required = false;
     zipCode.required = false;
     cvv.required = false;
   }
 }
-
 valPaymentMethod();
-
-}, false);
+});
