@@ -263,24 +263,27 @@ creditCard.selected = true;
 
 const form = document.querySelector('form');
 form.addEventListener('submit', (e) => {
-e.preventDefault();
-
-
 
 
    const labelName = inputName.previousSibling.previousSibling;
    const errorNameMessage = document.createElement('span');
    const errorActivitiesMessage = document.createElement('span');
    const errorMailMessage = document.createElement('span');
+   const errorCreditCardMessage = document.createElement('p');
 
 //function valid name
 function validName() {
   inputName.required = true;
-
   if (!inputName.validity.valid) {
+    inputName.setAttribute("placeholder", "Victor Hugo");
     errorNameMessage.innerHTML = '<strong>  Please type a correct name</strong>';
     errorNameMessage.style.color = '#b70000';
     labelName.appendChild(errorNameMessage);
+    function removeSecondErrorName(){
+      labelName.removeChild(errorNameMessage.previousSibling);
+    }
+  removeSecondErrorName();
+  e.preventDefault();
     }
   }
 validName();
@@ -290,9 +293,15 @@ function validEmail() {
   inputMail.required = true;
   if (!inputMail.validity.valid) {
     const labelMail = inputMail.previousSibling.previousSibling;
+    inputMail.setAttribute("placeholder", "victorhugo@writer.com");
     errorMailMessage.innerHTML = '<strong> Your email should look like "name@company.com"</strong>';
     errorMailMessage.style.color = '#b70000';
     labelMail.appendChild(errorMailMessage);
+    function removeSecondErrorMail(){
+      labelMail.removeChild(errorMailMessage.previousSibling);
+    }
+  removeSecondErrorMail();
+  e.preventDefault();
   }
 }
  validEmail();
@@ -306,12 +315,11 @@ const activitiesError = all.parentNode.parentNode;
   errorActivitiesMessage.innerHTML = '<strong> Please, select at least one activity</strong>';
   errorActivitiesMessage.style.color = '#b70000';
   activitiesError.appendChild(errorActivitiesMessage);
-
   function removeSecondErrorCheckbox(){
     activitiesError.removeChild(errorActivitiesMessage.previousSibling);
   }
 removeSecondErrorCheckbox();
-
+e.preventDefault();
   }
 }
 valCheckBoxForm();
@@ -319,22 +327,36 @@ valCheckBoxForm();
 
 function valPaymentMethod(){
 
+
+
   if( creditCard.selected === true ){
     inputNumberCreditCard.required = true;
     zipCode.required = true;
     cvv.required = true;
-    paypal.selected === false;
-    bitcoin.selected === false;
+    if( !inputNumberCreditCard.validity.valid || !zipCode.validity.valid || !cvv.validity.valid ) {
+      inputNumberCreditCard.setAttribute("placeholder", "13 to 16 numbers");
+      zipCode.setAttribute("placeholder", "xxxxx");
+      cvv.setAttribute("placeholder", "xxx");
+      errorCreditCardMessage.innerHTML = '<strong> The three fields accept only numbers:</strong><p>- a 13 to 16 digit credit card number</p><p>- a 5 digit zip code</p><p>- 3 number CVV value</p>';
+      errorCreditCardMessage.style.color = '#b70000';
+      divCreditCard.appendChild(errorCreditCardMessage);
+      function removeSecondErrorCreditcard(){
+        divCreditCard.removeChild(errorCreditCardMessage.previousSibling);
+      }
+    removeSecondErrorCreditcard();
+      e.preventDefault();
+
+    }
+
   }
 
   if( paypal.selected === true || bitcoin.selected === true ){
     inputNumberCreditCard.required = false;
     zipCode.required = false;
     cvv.required = false;
-    creditCard.selected === false;
   }
 }
 
 valPaymentMethod();
 
-});
+}, false);
