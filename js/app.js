@@ -212,11 +212,21 @@ lastFieldset.addEventListener('change', (e) => {
 		divPaypal.style.display = 'block';
 		divBitcoin.style.display = 'none';
 		divCreditCard.style.display = 'none';
+		const spanPayment = document.createElement('span');
+		lastFieldset.appendChild(spanPayment);
+		spanPayment.className = 'errorPayment';
+		const errorPayment = document.querySelector('.errorPayment');
+		errorPayment.innerHTML = '';
 	}
 	if (selected === 'bitcoin') {
 		divBitcoin.style.display = 'block';
 		divPaypal.style.display = 'none';
 		divCreditCard.style.display = 'none';
+		const spanPayment = document.createElement('span');
+		lastFieldset.appendChild(spanPayment);
+		spanPayment.className = 'errorPayment';
+		const errorPayment = document.querySelector('.errorPayment');
+		errorPayment.innerHTML = '';
 	}
 });
 // credit card required field
@@ -241,8 +251,9 @@ creditCard.selected = true;
 const spanMail = document.createElement('span');
 const labelMail = document.querySelectorAll('label')[1];
 labelMail.appendChild(spanMail);
+const correctMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 inputMail.addEventListener('input', (e) => {
-	if (!inputMail.validity.valid || inputMail.value.length === 0) {
+	if (!inputMail.validity.valid || inputMail.value.length === 0 || !correctMail.test(inputMail.value)) {
 		spanMail.className = 'errorMailLive';
 		const errorMailLive = document.querySelector('.errorMailLive');
 		errorMailLive.innerHTML = " <strong>I'm waiting for an email, I'll let you know when it's ready</strong>";
@@ -254,27 +265,31 @@ inputMail.addEventListener('input', (e) => {
 	}
 });
 //REAL TIME NUMBER CARD VALIDATION ---------------------------------------------
-const spanNumbersCreditCard = document.createElement('span');
-lastFieldset.appendChild(spanNumbersCreditCard);
 inputNumberCreditCard.addEventListener('input', (e) => {
-  if (isNaN(inputNumberCreditCard.value)){
-    spanNumbersCreditCard.className = 'errorCreditCardLive';
-    const errorCreditLive = document.querySelector('.errorCreditCardLive');
+	const spanNumbersCreditCard = document.createElement('span');
+	lastFieldset.appendChild(spanNumbersCreditCard);
+	const errorCreditLive = document.querySelector('.errorCreditCardLive');
+	spanNumbersCreditCard.className = 'errorCreditCardLive';
+
+  if (isNaN(inputNumberCreditCard.value)) {
+		const errorCreditLive = document.querySelector('.errorCreditCardLive');
+		spanNumbersCreditCard.className = 'errorCreditCardLive';
     errorCreditLive.innerHTML = " <strong>This is not a number! </strong>";
     errorCreditLive.style.color = '#b70000';
-  } else if (inputNumberCreditCard.value.length === 0){
-    const errorCreditLive = document.querySelector('.errorCreditCardLive');
+  } else {
+	if (inputNumberCreditCard.value.length === 0) {
     errorCreditLive.innerHTML = " <strong>I need numbers! </strong>";
     errorCreditLive.style.color = '#b70000';
-  } else if (inputNumberCreditCard.value.length === 5){
-    const errorCreditLive = document.querySelector('.errorCreditCardLive');
+  } else if (inputNumberCreditCard.value.length === 3) {
+
     errorCreditLive.innerHTML = " <strong>Keep writing numbers dude!! </strong>";
     errorCreditLive.style.color = '#b70000';
-  } else if(inputNumberCreditCard.validity.valid){
-    const errorCreditLive = document.querySelector('.errorCreditCardLive');
+  } else if (inputNumberCreditCard.validity.valid) {
+
     errorCreditLive.innerHTML = " <strong>WELL DONE WITH THE CREDIT CARD! </strong>";
     errorCreditLive.style.color = '#2733ce';
   }
+}
 });
 //WHEN THE REGISTER BUTTON IS CLICKED ------------------------------------------
 const form = document.querySelector('form');
@@ -284,7 +299,8 @@ form.addEventListener('submit', (e) => {
 	const spanName = document.createElement('span');
 	const labelName = document.querySelector('label');
 	inputName.required = true;
-	if (!inputName.validity.valid) {
+	const hasNumber = /\d/;
+	if (!inputName.validity.valid || hasNumber.test(inputName.value)) {
 		labelName.appendChild(spanName);
 		spanName.className = 'errorName';
 		const errorName = document.querySelector('.errorName');
@@ -293,12 +309,15 @@ form.addEventListener('submit', (e) => {
 		inputName.setAttribute("placeholder", "Victor Hugo");
 		e.preventDefault();
 	} else {
+		labelName.appendChild(spanName);
+		spanName.className = 'errorName';
 		const errorName = document.querySelector('.errorName');
 		errorName.innerHTML = '';
 	}
 	//input mail validation
-	inputMail.required = true;
-	if (!inputMail.validity.valid) {
+inputMail.required = true;
+
+	if (!inputMail.validity.valid || !correctMail.test(inputMail.value)) {
 		spanMail.className = 'errorMail';
 		const errorMail = document.querySelector('.errorMail');
 		errorMail.innerHTML = '<strong>  Please type a correct email (name@company.com)</strong>';
