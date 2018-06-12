@@ -337,6 +337,8 @@ inputMail.required = true;
 		errorActivities.style.color = '#b70000';
 		e.preventDefault();
 	} else {
+		activitiesError.appendChild(spanActivities);
+		spanActivities.className = 'errorActivities';
 		const errorActivities = document.querySelector('.errorActivities');
 		errorActivities.innerHTML = '';
 	}
@@ -359,6 +361,8 @@ inputMail.required = true;
 			errorPayment.style.color = '#b70000';
 			e.preventDefault();
 		} else {
+			lastFieldset.appendChild(spanPayment);
+			spanPayment.className = 'errorPayment';
 			const errorPayment = document.querySelector('.errorPayment');
 			errorPayment.innerHTML = '';
 		}
